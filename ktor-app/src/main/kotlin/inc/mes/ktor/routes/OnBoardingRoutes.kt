@@ -17,10 +17,11 @@ package inc.mes.ktor.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import inc.mes.ktor.data.entity.Token
-import inc.mes.ktor.data.entity.User
+import inc.mes.ktor.data.entities.Token
+import inc.mes.ktor.data.entities.User
 import inc.mes.ktor.data.userStorage
 import inc.mes.ktor.data.userTokenStorage
+import inc.mes.ktor.routes.serializers.SignUpSerializer
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isAfter
 import inc.mes.ktor.utils.toJavaDate
@@ -34,61 +35,86 @@ import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.slf4j.Logger
+
+/***
+ * A route to add a user to the database.
+ */
+fun Route.signUpRoute(log: Logger) {
+    route("/auth/signup/") {
+        post {
+            log.info("Sign up request")
+            call.application.environment.log.info("Hello from signup")
+            val user = call.receive<SignUpSerializer>()
+            log.info("Sign up request: $user")
+            userStorage[user.username] = user
+            call.respond(status = HttpStatusCode.Created, message = user)
+        }
+    }
+}
+
+/***
+ * A route to login a user and set a JWT Bearer Token.
+ */
+@OptIn(ExperimentalTime::class)
+fun Route.loginRoute(
+    secret: String,
+    issuer: String,
+    audience: String,
+    log: Logger
+) {
+    route("/auth/login/") {
+        post {
+            log.info("Login request")
+            val user = call.receive<User>()
+            // Check username and password
+            val existingUser = userStorage[user.username] ?: return@post call.respond(
+                message = "User doesn't exist",
+                status = HttpStatusCode.NotFound
+            )
+            if (!existingUser.password.contentEquals(user.password)) {
+                return@post call.respond(
+                    message = "Invalid credentials!",
+                    status = HttpStatusCode.BadRequest
+                )
+            }
+            var existingToken = userTokenStorage[existingUser]
+            if (existingToken == null ||
+                existingToken.expiry.isAfter(getLocalDateTimeNow())
+            ) {
+                val tokenExpiry = (Clock.System.now() + Duration.days(1)).toLocalDateTime(
+                    TimeZone.currentSystemDefault()
+                )
+                val token = JWT.create()
+                    .withAudience(audience)
+                    .withIssuer(issuer)
+                    .withClaim("username", user.username)
+                    .withExpiresAt(tokenExpiry.toJavaDate())
+                    .sign(Algorithm.HMAC256(secret))
+                existingToken = Token(
+                    user = existingUser,
+                    token = token,
+                    expiry = tokenExpiry
+                )
+            }
+            call.respond(existingToken)
+        }
+    }
+}
 
 @OptIn(ExperimentalTime::class)
-fun Application.registerOnBoardingRoutes() {
-    val secret = environment.config.property("jwt.secret").getString()
-    val issuer = environment.config.property("jwt.issuer").getString()
-    val audience = environment.config.property("jwt.audience").getString()
-    val myRealm = environment.config.property("jwt.realm").getString()
+fun Application.onBoardingRoutes(
+    secret: String,
+    issuer: String,
+    audience: String,
+) {
     routing {
-        fun Route.onBoardingRouting() {
-            route("/auth/login/") {
-                post {
-                    val user = call.receive<User>()
-                    // Check username and password
-                    val existingUser = userStorage[user.username] ?: return@post call.respond(
-                        message = "User doesn't exist",
-                        status = HttpStatusCode.NotFound
-                    )
-                    if (!existingUser.password.contentEquals(user.password)) {
-                        return@post call.respond(
-                            message = "Invalid credentials!",
-                            status = HttpStatusCode.BadRequest
-                        )
-                    }
-                    var existingToken = userTokenStorage[existingUser]
-                    if (existingToken == null ||
-                        existingToken.expiry.isAfter(getLocalDateTimeNow())
-                    ) {
-                        val tokenExpiry = (Clock.System.now() + Duration.days(1)).toLocalDateTime(
-                            TimeZone.currentSystemDefault()
-                        )
-                        val token = JWT.create()
-                            .withAudience(audience)
-                            .withIssuer(issuer)
-                            .withClaim("username", user.username)
-                            .withExpiresAt(tokenExpiry.toJavaDate())
-                            .sign(Algorithm.HMAC256(secret))
-                        existingToken = Token(
-                            user = existingUser,
-                            token = token,
-                            expiry = tokenExpiry
-                        )
-                    }
-                    call.respond(existingToken)
-                }
-            }
-            route("/auth/signup/") {
-                post {
-                    log.info("Sign up request")
-                    call.application.environment.log.info("Hello from signup")
-                    val user = call.receive<User>()
-                    log.info("Sign up request: $user")
-                    userStorage[user.username] = user
-                    call.respond(status = HttpStatusCode.Created, message = user)
-                }
-            }
-        }
+        signUpRoute(log)
+        loginRoute(
+            secret,
+            issuer,
+            audience,
+            log = log,
+        )
     }
 }

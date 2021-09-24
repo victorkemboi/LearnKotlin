@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data.entity
+package inc.mes.ktor.data.entities
 
 import kotlinx.serialization.*
 
 @Serializable
 data class Customer(
-    val id: String,
-    val firstName: String,
-    val lastName: String,
-    val email: String
+    var firstName: String,
+    var lastName: String,
+    var email: String,
+    var id: Int = 0,
 )

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data.entity
+package inc.mes.ktor.data.entities
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.*

@@ -15,8 +15,8 @@
  */
 package inc.mes.ktor.data
 
-import inc.mes.ktor.data.entity.*
+import inc.mes.ktor.data.entities.*
 
-val customerStorage = mutableListOf<Customer>()
-val userStorage = hashMapOf<String, User>()
+val customerStorage = hashMapOf<Int, Customer>()
+val userStorage = hashMapOf<Int, User>()
 val userTokenStorage = hashMapOf<User, Token>()

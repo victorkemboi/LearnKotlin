@@ -22,10 +22,6 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
 import io.ktor.serialization.*
 
 // https://ktor.io/docs/jwt.html#jwt-settings
@@ -60,16 +56,10 @@ fun Application.module(testing: Boolean = true) {
             }
         }
     }
-    routing {
-        authenticate("auth-jwt") {
-            get("/hello") {
-                val principal = call.principal<JWTPrincipal>()
-                val username = principal!!.payload.getClaim("username").asString()
-                val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-                call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
-            }
-        }
-    }
-    registerOnBoardingRoutes()
+    onBoardingRoutes(
+        secret,
+        issuer,
+        audience,
+    )
     registerCustomerRoutes()
 }

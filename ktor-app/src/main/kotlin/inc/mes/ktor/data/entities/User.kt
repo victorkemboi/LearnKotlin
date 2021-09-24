@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data.entity
+package inc.mes.ktor.data.entities
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val id: String,
-    val username: String,
-    val password: String
+    var username: String,
+    var password: String,
+    var id: Int = 0,
 )
 
 @Serializable
 data class Token(
     val user: User,
-    val token: String,
-    val expiry: LocalDateTime
+    var token: String,
+    var expiry: LocalDateTime,
+    var id: Int = 0,
 )
