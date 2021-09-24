@@ -20,6 +20,14 @@ import inc.mes.ktor.data.daos.UserDao
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+/***
+ * Declare database module for Koin.
+ * Add any dependency providers in the module below.
+ */
+
+/***
+ * Provide DAO dependencies.
+ */
 val daoModule: Module = module {
     single {
         UserDao()
