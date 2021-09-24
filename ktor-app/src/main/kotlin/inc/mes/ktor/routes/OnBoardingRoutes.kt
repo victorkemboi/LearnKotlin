@@ -43,7 +43,7 @@ import org.slf4j.Logger
 /***
  * A route to add a user to the database.
  */
-fun Route.signUpRoute(log: Logger) {
+fun Route.signUpRoute(log: Logger, userDao: UserDao = UserDao()) {
     route("/auth/signup/") {
         post {
             log.info("Sign up request")
@@ -55,7 +55,7 @@ fun Route.signUpRoute(log: Logger) {
                 )
             log.info("Sign up request: $user")
             val savedUser = user.toUser().apply {
-                id = UserDao().insert(this)
+                id = userDao.insert(this)
             }
             call.respond(status = HttpStatusCode.Created, message = savedUser)
         }
@@ -70,7 +70,8 @@ fun Route.loginRoute(
     secret: String,
     issuer: String,
     audience: String,
-    log: Logger
+    log: Logger,
+    userDao: UserDao = UserDao()
 ) {
     route("/auth/login/") {
         post {
@@ -80,7 +81,6 @@ fun Route.loginRoute(
                     message = "Invalid request!",
                     status = HttpStatusCode.BadRequest
                 )
-            val userDao = UserDao()
             // Check username and password
             val existingUser = userDao.getByUsername(username = user.username).first()
                 ?: return@post call.respond(

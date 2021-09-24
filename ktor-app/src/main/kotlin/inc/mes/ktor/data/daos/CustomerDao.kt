@@ -2,8 +2,26 @@ package inc.mes.ktor.data.daos
 
 import inc.mes.ktor.data.customerStorage
 import inc.mes.ktor.data.models.Customer
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class CustomerDao : BaseDao<Customer> {
+    fun get(id: Int): Flow<Customer?> = flow {
+        emit(
+            customerStorage[id]
+        )
+    }
+
+    fun getByEmail(email: String): Flow<Customer?> = flow {
+        for (customer in customerStorage.entries) {
+            if (customer.value.email == email) {
+                emit(customer.value)
+                break
+            }
+        }
+        emit(null)
+    }
+
     override suspend fun insert(item: Customer): Int {
         if (item.id != 0 || customerStorage.containsValue(item)) {
             return 0

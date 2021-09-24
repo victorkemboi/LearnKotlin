@@ -7,6 +7,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class UserDao : BaseDao<User> {
+    fun get(id: Int): Flow<User?> = flow {
+        emit(
+            userStorage[id]
+        )
+    }
+
     fun userExists(username: String): Flow<Boolean> = getByUsername(username).map {
         it != null
     }
