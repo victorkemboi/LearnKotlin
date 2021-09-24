@@ -53,6 +53,7 @@ connected systems using the powerful Kotlin programming language.
   * [Logback Classic](http://logback.qos.ch/) - A reliable, generic, fast and flexible logging framework.
   * [Ktor Serialization](https://ktor.io/docs/kotlin-serialization.html) - Allows you to use content converters
   provided by the [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+  * [Ktor Gson](https://ktor.io/docs/gson.html) - A built-in Gson converter for handing JSON data in your application.
   * [Ktor Auth](https://ktor.io/docs/authentication.html) - Used to provide authentication for the server.
   * [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - A multiplatform Kotlin library for working with
   date and time.
