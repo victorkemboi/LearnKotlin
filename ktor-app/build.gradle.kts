@@ -29,6 +29,9 @@ dependencies {
     // kotlinx datetime
     implementation(Libraries.kotlinxDateTime)
 
+    // Koin for DI
+    implementation(Libraries.ktorKoin)
+
     // kotlin test libraries
     testImplementation(TestLibraries.kotlinTest)
 }

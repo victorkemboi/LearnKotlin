@@ -11,6 +11,7 @@ object Versions {
     const val logBackClassic = "1.2.5"
     const val joda = "2.10.10"
     const val kotlinxDateTime = "0.2.1"
+    const val koin = "3.1.2"
 }
 
 object BuildPlugins {
@@ -40,6 +41,8 @@ object Libraries {
     const val joda = "joda-time:joda-time:${Versions.joda}"
     // kotlinx date time library
     const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDateTime}"
+    // Koin dependency injection
+    const val ktorKoin = "io.insert-koin:koin-ktor:${Versions.koin}"
 }
 
 object TestLibraries {
