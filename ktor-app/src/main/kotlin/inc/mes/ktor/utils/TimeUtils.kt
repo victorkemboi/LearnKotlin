@@ -1,28 +1,34 @@
 package inc.mes.ktor.utils
 
 import kotlinx.datetime.*
-import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
+import kotlinx.datetime.TimeZone
+import java.util.*
+import kotlin.time.ExperimentalTime
 
 /**
  * Kotlinx datetime extensions
  */
-fun getLocalDateTimeNow() = Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+fun getLocalDateTimeNow(timezone: TimeZone = TimeZone.currentSystemDefault()) =
+    Clock.System.now().toLocalDateTime(timeZone = timezone)
 
-fun LocalDateTime.isTokenExpired(): Boolean =
-    getLocalDateTimeNow().toJodaDateTime().isAfter(this.toJodaDateTime())
+@OptIn(ExperimentalTime::class)
+fun LocalDateTime.isAfter(other: LocalDateTime, timezone: TimeZone = TimeZone.currentSystemDefault()): Boolean = (
+        other.toInstant(timeZone = timezone)
+                - this.toInstant(timeZone = timezone)
+        ).isNegative()
 
-fun LocalDateTime.toJodaDateTime(): DateTime =
-    DateTime(year, monthNumber, dayOfMonth, hour, minute, second)
+@OptIn(ExperimentalTime::class)
+fun LocalDateTime.isBefore(other: LocalDateTime, timezone: TimeZone = TimeZone.currentSystemDefault()): Boolean = (
+        other.toInstant(timeZone = timezone)
+                - this.toInstant(timeZone = timezone)
+        ).isPositive()
 
+@OptIn(ExperimentalTime::class)
+fun Instant.isAfter(other: Instant): Boolean = (other - this).isNegative()
 
-/**
- * Joda Time extensions
- */
-fun DateTime.toIso(): String = ISODateTimeFormat.dateTime().print(this)
+@OptIn(ExperimentalTime::class)
+fun Instant.isBefore(other: Instant): Boolean = (other - this).isPositive()
 
-fun DateTime.toKtDateTime(): LocalDateTime? = try {
-    LocalDateTime.parse(this.toIso())
-} catch (e: IllegalArgumentException) {
-    null
-}
+fun LocalDateTime.toJavaDate(timezone: TimeZone = TimeZone.currentSystemDefault()): Date = Date.from(
+    this.toInstant(timeZone = timezone).toJavaInstant()
+)

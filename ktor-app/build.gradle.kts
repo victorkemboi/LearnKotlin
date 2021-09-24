@@ -24,9 +24,6 @@ dependencies {
     implementation(Libraries.ktorAuth)
     implementation(Libraries.ktorJwtAuth)
 
-    // Joda time library
-    implementation(Libraries.joda)
-
     // kotlinx datetime
     implementation(Libraries.kotlinxDateTime)
 

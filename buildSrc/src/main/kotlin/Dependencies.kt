@@ -47,11 +47,9 @@ object TestLibraries {
 object Project {
     const val group = "inc.mes"
     const val version = "1.0.0"
-    const val projectName = "LearnKotlin"
 }
 
 object BuildModules {
-    const val appModule = ":agent-app"
     const val coreModule = ":internal:core"
     const val dataModule = ":internal:data"
     const val domainModule = ":internal:domain"
