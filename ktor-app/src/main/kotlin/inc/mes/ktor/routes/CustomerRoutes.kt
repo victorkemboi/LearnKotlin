@@ -16,7 +16,7 @@
 package inc.mes.ktor.routes
 
 import inc.mes.ktor.data.*
-import inc.mes.ktor.data.entities.Customer
+import inc.mes.ktor.data.models.Customer
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

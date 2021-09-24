@@ -15,7 +15,7 @@
  */
 package inc.mes.ktor.data
 
-import inc.mes.ktor.data.entities.*
+import inc.mes.ktor.data.models.*
 
 val customerStorage = hashMapOf<Int, Customer>()
 val userStorage = hashMapOf<Int, User>()

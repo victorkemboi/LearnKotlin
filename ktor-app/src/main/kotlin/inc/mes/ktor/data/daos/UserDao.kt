@@ -1,6 +1,6 @@
 package inc.mes.ktor.data.daos
 
-import inc.mes.ktor.data.entities.User
+import inc.mes.ktor.data.models.User
 import inc.mes.ktor.data.userStorage
 
 class UserDao : BaseDao<User> {

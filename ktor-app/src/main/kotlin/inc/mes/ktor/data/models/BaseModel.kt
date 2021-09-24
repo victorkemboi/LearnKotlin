@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data.entities
+package inc.mes.ktor.data.models
 
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.*
 
 @Serializable
-data class Customer(
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var id: Int = 0,
-)
+open class BaseModel {
+    val createdAt: LocalDateTime? = null
+    val updatedAt: LocalDateTime? = null
+}

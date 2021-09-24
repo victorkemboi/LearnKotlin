@@ -1,7 +1,7 @@
 package inc.mes.ktor.data.daos
 
 import inc.mes.ktor.data.customerStorage
-import inc.mes.ktor.data.entities.Customer
+import inc.mes.ktor.data.models.Customer
 
 class CustomerDao : BaseDao<Customer> {
     override suspend fun insert(item: Customer): Int {
