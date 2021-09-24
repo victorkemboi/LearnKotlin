@@ -23,7 +23,7 @@ import inc.mes.ktor.data.models.User
 import inc.mes.ktor.data.userStorage
 import inc.mes.ktor.data.userTokenStorage
 import inc.mes.ktor.routes.mappers.toUser
-import inc.mes.ktor.routes.serializers.SignUpSerializer
+import inc.mes.ktor.routes.serializers.AuthSerializer
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isAfter
 import inc.mes.ktor.utils.toJavaDate
@@ -32,6 +32,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.flow.first
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Clock
@@ -47,7 +48,7 @@ fun Route.signUpRoute(log: Logger) {
         post {
             log.info("Sign up request")
             call.application.environment.log.info("Hello from signup")
-            val user = call.receiveOrNull<SignUpSerializer>()
+            val user = call.receiveOrNull<AuthSerializer>()
                 ?: return@post call.respond(
                     message = "Invalid request!",
                     status = HttpStatusCode.BadRequest
@@ -74,12 +75,18 @@ fun Route.loginRoute(
     route("/auth/login/") {
         post {
             log.info("Login request")
-            val user = call.receive<User>()
+            val user = call.receiveOrNull<AuthSerializer>()
+                ?: return@post call.respond(
+                    message = "Invalid request!",
+                    status = HttpStatusCode.BadRequest
+                )
+            val userDao = UserDao()
             // Check username and password
-            val existingUser = userStorage[user.username] ?: return@post call.respond(
-                message = "User doesn't exist",
-                status = HttpStatusCode.NotFound
-            )
+            val existingUser = userDao.getByUsername(username = user.username).first()
+                ?: return@post call.respond(
+                    message = "User doesn't exist",
+                    status = HttpStatusCode.NotFound
+                )
             if (!existingUser.password.contentEquals(user.password)) {
                 return@post call.respond(
                     message = "Invalid credentials!",
