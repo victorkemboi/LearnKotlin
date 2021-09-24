@@ -17,16 +17,19 @@ package inc.mes.ktor
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import inc.mes.ktor.data.daos.CustomerDao
+import inc.mes.ktor.data.daos.UserDao
 import inc.mes.ktor.data.di.dbModules
-import inc.mes.ktor.routes.*
+import inc.mes.ktor.routes.onBoardingRoutes
+import inc.mes.ktor.routes.registerCustomerRoutes
+import inc.mes.ktor.utils.JwtVars
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.gson.*
-import io.ktor.serialization.*
-import org.koin.ktor.ext.Koin
 import org.koin.core.module.Module
+import org.koin.ktor.ext.Koin
 import org.koin.logger.SLF4JLogger
 
 // https://ktor.io/docs/jwt.html#jwt-settings
@@ -64,18 +67,30 @@ fun Application.module(testing: Boolean = true) {
             }
         }
     }
+    // Build app provided dependencies.
+    val appModules: Module = org.koin.dsl.module {
+        single {
+            log
+        }
+        single {
+            JwtVars(
+                secret = secret,
+                issuer = issuer,
+                audience = audience,
+                myRealm = myRealm
+            )
+        }
+    }
+
     // Declare Koin
     install(Koin) {
         SLF4JLogger()
         val koinModules = mutableListOf<Module>().apply {
+            add(appModules)
             addAll(dbModules)
         }
         modules(koinModules)
     }
-    onBoardingRoutes(
-        secret,
-        issuer,
-        audience,
-    )
+    onBoardingRoutes()
     registerCustomerRoutes()
 }
