@@ -8,9 +8,9 @@ interface BaseDao<T> {
 
     suspend fun insert(items: List<T>): List<Int>
 
-    suspend fun update(item: T): Int
+    suspend fun update(item: T): Boolean
 
-    suspend fun update(items: List<T>): Int
+    suspend fun update(items: List<T>): List<Boolean>
 
     suspend fun delete(item: T)
 }

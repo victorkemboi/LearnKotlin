@@ -15,23 +15,33 @@ class UserDao : BaseDao<User> {
         return userId
     }
 
-    override suspend fun insert(vararg items: User): List<Int> {
-        TODO("Not yet implemented")
+    override suspend fun insert(vararg items: User): List<Int> = mutableListOf<Int>().apply {
+        items.forEach {
+            add(insert(it))
+        }
     }
 
-    override suspend fun insert(items: List<User>): List<Int> {
-        TODO("Not yet implemented")
+    override suspend fun insert(items: List<User>): List<Int> = mutableListOf<Int>().apply {
+        items.forEach {
+            add(insert(it))
+        }
     }
 
-    override suspend fun update(item: User): Int {
-        TODO("Not yet implemented")
+    override suspend fun update(item: User): Boolean {
+        if (item.id == 0 || !userStorage.containsKey(item.id)) {
+            return false
+        }
+        userStorage[item.id] = item
+        return true
     }
 
-    override suspend fun update(items: List<User>): Int {
-        TODO("Not yet implemented")
+    override suspend fun update(items: List<User>): List<Boolean> = mutableListOf<Boolean>().apply {
+        items.forEach {
+            add(update(it))
+        }
     }
 
     override suspend fun delete(item: User) {
-        TODO("Not yet implemented")
+        userStorage.remove(item.id)
     }
 }
