@@ -25,8 +25,12 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.flow.first
+import org.koin.ktor.ext.inject
 
-fun Route.customerRouting(application: Application, customerDao: CustomerDao = CustomerDao()) {
+fun Route.customerRouting(application: Application) {
+
+    val customerDao: CustomerDao by inject()
+
     route("/customer/") {
         get {
             if (customerStorage.isNotEmpty()) {

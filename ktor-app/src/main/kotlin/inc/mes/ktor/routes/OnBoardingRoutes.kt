@@ -22,6 +22,7 @@ import inc.mes.ktor.data.models.Token
 import inc.mes.ktor.data.userTokenStorage
 import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.AuthSerializer
+import inc.mes.ktor.utils.JwtVars
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isBefore
 import inc.mes.ktor.utils.toJavaDate
@@ -36,12 +37,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.koin.ktor.ext.inject
 import org.slf4j.Logger
 
 /***
  * A route to add a user to the database.
  */
-fun Route.signUpRoute(log: Logger, userDao: UserDao = UserDao()) {
+fun Route.signUpRoute() {
+    val userDao: UserDao by inject()
+    val log: Logger by inject()
     route("/auth/signup/") {
         post {
             log.info("Sign up request")
@@ -64,13 +68,10 @@ fun Route.signUpRoute(log: Logger, userDao: UserDao = UserDao()) {
  * A route to login a user and set a JWT Bearer Token.
  */
 @OptIn(ExperimentalTime::class)
-fun Route.loginRoute(
-    secret: String,
-    issuer: String,
-    audience: String,
-    log: Logger,
-    userDao: UserDao = UserDao()
-) {
+fun Route.loginRoute() {
+    val log: Logger by inject()
+    val userDao: UserDao by inject()
+    val jwtVars: JwtVars by inject()
     route("/auth/login/") {
         post {
             log.info("Login request")
@@ -99,11 +100,11 @@ fun Route.loginRoute(
                     TimeZone.currentSystemDefault()
                 )
                 val token = JWT.create()
-                    .withAudience(audience)
-                    .withIssuer(issuer)
+                    .withAudience(jwtVars.audience)
+                    .withIssuer(jwtVars.issuer)
                     .withClaim("username", user.username)
                     .withExpiresAt(tokenExpiry.toJavaDate())
-                    .sign(Algorithm.HMAC256(secret))
+                    .sign(Algorithm.HMAC256(jwtVars.secret))
                 existingToken = Token(
                     user = existingUser,
                     token = token,
@@ -117,18 +118,9 @@ fun Route.loginRoute(
 }
 
 @OptIn(ExperimentalTime::class)
-fun Application.onBoardingRoutes(
-    secret: String,
-    issuer: String,
-    audience: String,
-) {
+fun Application.onBoardingRoutes() {
     routing {
-        signUpRoute(log)
-        loginRoute(
-            secret,
-            issuer,
-            audience,
-            log = log,
-        )
+        signUpRoute()
+        loginRoute()
     }
 }

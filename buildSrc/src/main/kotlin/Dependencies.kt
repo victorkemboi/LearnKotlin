@@ -11,6 +11,7 @@ object Versions {
     const val logBackClassic = "1.2.5"
     const val joda = "2.10.10"
     const val kotlinxDateTime = "0.2.1"
+    const val koin = "3.1.2"
 }
 
 object BuildPlugins {
@@ -23,7 +24,7 @@ object BuildPlugins {
 
 object Libraries {
     // Netty Engine
-    const val netty = "io.ktor:ktor-server-netty:${Versions.ktor}"
+    const val ktorNetty = "io.ktor:ktor-server-netty:${Versions.ktor}"
     // Ktor's core components
     const val ktorCore = "io.ktor:ktor-server-core:${Versions.ktor}"
     // Ktor Auth
@@ -40,6 +41,9 @@ object Libraries {
     const val joda = "joda-time:joda-time:${Versions.joda}"
     // kotlinx date time library
     const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDateTime}"
+    // Koin dependency injection
+    const val koinKtor = "io.insert-koin:koin-ktor:${Versions.koin}"
+    const val koinLogger = "io.insert-koin:koin-logger-slf4j:${Versions.koin}"
 }
 
 object TestLibraries {
