@@ -16,7 +16,6 @@ dependencies {
     // log formatter
     implementation(Libraries.logBackClassic)
 
-
     // data serialization for ktor
     implementation(Libraries.ktorSerialization)
 
@@ -29,7 +28,6 @@ dependencies {
 
     // kotlin test libraries
     testImplementation(TestLibraries.kotlinTest)
-
 }
 
 tasks.test {
@@ -42,5 +40,4 @@ tasks.withType<KotlinCompile>() {
 
 application {
     mainClass.set("inc.mes.ktor.ServerKt")
-//    mainClass.set("io.ktor.server.netty.EngineMain")
 }

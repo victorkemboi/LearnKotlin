@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data
+package inc.mes.ktor.data.entity
 
-import inc.mes.ktor.data.entity.*
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.*
 
-val customerStorage = mutableListOf<Customer>()
-val userStorage = hashMapOf<String, User>()
-val userTokenStorage = hashMapOf<User, Token>()
+@Serializable
+open class BaseEntity {
+    val createdAt: LocalDateTime? = null
+    val updatedAt: LocalDateTime? = null
+}

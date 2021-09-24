@@ -27,6 +27,7 @@ allprojects {
         filter {
             exclude { element -> element.file.path.contains("generated/") }
         }
+        disabledRules.addAll("no-wildcard-imports")
     }
 }
 
