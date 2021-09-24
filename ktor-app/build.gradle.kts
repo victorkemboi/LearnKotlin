@@ -10,7 +10,7 @@ group = "inc.mes.ktor-app"
 
 dependencies {
     // Netty engine
-    implementation(Libraries.netty)
+    implementation(Libraries.ktorNetty)
     // Ktor's core components
     implementation(Libraries.ktorCore)
     // log formatter
@@ -30,7 +30,9 @@ dependencies {
     implementation(Libraries.kotlinxDateTime)
 
     // Koin for DI
-    implementation(Libraries.ktorKoin)
+    implementation(Libraries.koinKtor)
+    // Koin logger
+    implementation(Libraries.koinLogger)
 
     // kotlin test libraries
     testImplementation(TestLibraries.kotlinTest)

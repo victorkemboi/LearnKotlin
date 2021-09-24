@@ -24,7 +24,7 @@ object BuildPlugins {
 
 object Libraries {
     // Netty Engine
-    const val netty = "io.ktor:ktor-server-netty:${Versions.ktor}"
+    const val ktorNetty = "io.ktor:ktor-server-netty:${Versions.ktor}"
     // Ktor's core components
     const val ktorCore = "io.ktor:ktor-server-core:${Versions.ktor}"
     // Ktor Auth
@@ -42,7 +42,8 @@ object Libraries {
     // kotlinx date time library
     const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDateTime}"
     // Koin dependency injection
-    const val ktorKoin = "io.insert-koin:koin-ktor:${Versions.koin}"
+    const val koinKtor = "io.insert-koin:koin-ktor:${Versions.koin}"
+    const val koinLogger = "io.insert-koin:koin-logger-slf4j:${Versions.koin}"
 }
 
 object TestLibraries {

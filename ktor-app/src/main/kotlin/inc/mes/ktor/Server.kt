@@ -17,6 +17,7 @@ package inc.mes.ktor
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import inc.mes.ktor.data.di.dbModules
 import inc.mes.ktor.routes.*
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -24,6 +25,9 @@ import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.serialization.*
+import org.koin.ktor.ext.Koin
+import org.koin.core.module.Module
+import org.koin.logger.SLF4JLogger
 
 // https://ktor.io/docs/jwt.html#jwt-settings
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -59,6 +63,14 @@ fun Application.module(testing: Boolean = true) {
                 }
             }
         }
+    }
+    // Declare Koin
+    install(Koin) {
+        SLF4JLogger()
+        val koinModules = mutableListOf<Module>().apply {
+            addAll(dbModules)
+        }
+        modules(koinModules)
     }
     onBoardingRoutes(
         secret,
