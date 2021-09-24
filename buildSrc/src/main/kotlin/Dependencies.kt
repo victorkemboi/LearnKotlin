@@ -34,6 +34,8 @@ object Libraries {
     const val logBackClassic = "ch.qos.logback:logback-classic:${Versions.logBackClassic}"
     // ktor serialization using kotlinx.serialization
     const val ktorSerialization = "io.ktor:ktor-serialization:${Versions.ktor}"
+    // Gson converter
+    const val ktorGson = "io.ktor:ktor-gson:${Versions.ktor}"
     // Joda time library
     const val joda = "joda-time:joda-time:${Versions.joda}"
     // kotlinx date time library

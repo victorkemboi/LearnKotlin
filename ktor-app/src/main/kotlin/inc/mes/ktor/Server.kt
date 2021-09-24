@@ -22,6 +22,7 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.gson.*
 import io.ktor.serialization.*
 
 // https://ktor.io/docs/jwt.html#jwt-settings
@@ -34,7 +35,10 @@ fun Application.module(testing: Boolean = true) {
     val myRealm = environment.config.property("jwt.realm").getString()
 
     install(ContentNegotiation) {
-        json()
+        gson {
+            setPrettyPrinting()
+            disableHtmlEscaping()
+        }
     }
 
     install(Authentication) {

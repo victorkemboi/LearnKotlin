@@ -19,6 +19,9 @@ dependencies {
     // data serialization for ktor
     implementation(Libraries.ktorSerialization)
 
+    // gson converter
+    implementation(Libraries.ktorGson)
+
     // JWT auth libs
     implementation(Libraries.ktorAuth)
     implementation(Libraries.ktorJwtAuth)
