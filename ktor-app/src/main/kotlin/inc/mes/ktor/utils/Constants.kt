@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data
+package inc.mes.ktor.utils
 
-import inc.mes.ktor.data.entity.*
+object Constants
 
-val customerStorage = mutableListOf<Customer>()
-val userStorage = hashMapOf<String, User>()
-val userTokenStorage = hashMapOf<User, Token>()
+object TimeConstants {
+    const val AuthTokeExpiryPeriod = 60000L
+}
