@@ -20,6 +20,9 @@ import inc.mes.ktor.data.models.Customer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/***
+ * A data access object for manipulating the [Customer] model in the database.
+ */
 class CustomerDao : BaseDao<Customer> {
     fun get(id: Int): Flow<Customer?> = flow {
         emit(

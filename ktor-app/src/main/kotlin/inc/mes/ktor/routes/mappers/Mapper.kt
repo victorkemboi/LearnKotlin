@@ -20,12 +20,22 @@ import inc.mes.ktor.data.models.User
 import inc.mes.ktor.routes.serializers.AuthSerializer
 import inc.mes.ktor.routes.serializers.CustomerSerializer
 
+/***
+ * This file provides mapper extension functions to convert Serializers to database models.
+ */
+
+/***
+ * Maps serializer [AuthSerializer] to database model [User]
+ */
 fun AuthSerializer.toUser() = User(
     id = 0,
     username = this.username,
     password = this.password
 )
 
+/***
+ * Maps serializer [CustomerSerializer] to database model [Customer]
+ */
 fun CustomerSerializer.toCustomer() = Customer(
     id = 0,
     firstName = this.firstName,
