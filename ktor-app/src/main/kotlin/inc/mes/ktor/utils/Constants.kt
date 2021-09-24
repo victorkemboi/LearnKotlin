@@ -18,5 +18,5 @@ package inc.mes.ktor.utils
 object Constants
 
 object TimeConstants {
-    const val AuthTokeExpiryPeriod = 60000L
+    const val AuthTokenExpiryPeriod = 60000L
 }
