@@ -30,6 +30,8 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Lint and format with KtLint, Detekt and Spotless
         run: ./gradlew ktlintFormat && ./gradlew ktlintCheck && ./gradlew detekt && ./gradlew spotlessApply
       - name: Build with Gradle
