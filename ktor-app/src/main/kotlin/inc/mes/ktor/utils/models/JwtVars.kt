@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.utils
+package inc.mes.ktor.utils.models
 
+/***
+ * JWT environment variables encapsulated to be injected via koin.
+ */
 data class JwtVars(
     val secret: String,
     val issuer: String,

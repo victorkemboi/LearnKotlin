@@ -40,7 +40,7 @@ and better IDE support. Trying to expand kotlin knowledge here:smiley:
     * [Dokka](https://github.com/Kotlin/dokka) - A documentation engine for Kotlin, performing the same function as
   javadoc for Java.
     * [jacoco](https://github.com/jacoco/jacoco) - A Code Coverage Library
-    * [Kotlin](https://kotlinlang.org/) - A modern programming language that makes developers happier.
+    * [Kotlin](https://kotlinlang.org/) - A modern programming language that makes developers happier.:kotlinnew:
 
 #### Modules
 * ##### Ktor App
@@ -48,7 +48,7 @@ and better IDE support. Trying to expand kotlin knowledge here:smiley:
 connected systems using the powerful Kotlin programming language.
 
   **Tech stack**
-  * [Ktor](https://ktor.io/) - Asynchronous server framework.
+  * [Ktor](https://ktor.io/) - Asynchronous server framework.:ktor:
   * [Netty](https://netty.io/) - An asynchronous event-driven network application framework used as the engine for ktor.
   * [Logback Classic](http://logback.qos.ch/) - A reliable, generic, fast and flexible logging framework.
   * [Ktor Serialization](https://ktor.io/docs/kotlin-serialization.html) - Allows you to use content converters
@@ -57,3 +57,4 @@ connected systems using the powerful Kotlin programming language.
   * [Ktor Auth](https://ktor.io/docs/authentication.html) - Used to provide authentication for the server.
   * [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - A multiplatform Kotlin library for working with
   date and time.
+  * [Koin](https://insert-koin.io/) - A smart Kotlin injection library to keep you focused on your app, not on your tools.

@@ -17,6 +17,9 @@ package inc.mes.ktor.routes.serializers
 
 import kotlinx.serialization.*
 
+/***
+ * Serializer class for allowing auth actions i.e. Login and Sign up
+ */
 @Serializable
 data class AuthSerializer(
     val username: String,

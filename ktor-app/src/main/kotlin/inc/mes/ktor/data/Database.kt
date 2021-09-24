@@ -17,6 +17,9 @@ package inc.mes.ktor.data
 
 import inc.mes.ktor.data.models.*
 
+/***
+ * Temporary database holders.
+ */
 val customerStorage = hashMapOf<Int, Customer>()
 val userStorage = hashMapOf<Int, User>()
 val userTokenStorage = hashMapOf<User, Token>()

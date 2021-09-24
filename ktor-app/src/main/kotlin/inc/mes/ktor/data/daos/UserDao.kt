@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
+/***
+ * A data access object for manipulating the [User] model in the database.
+ *
+ */
 class UserDao : BaseDao<User> {
     fun get(id: Int): Flow<User?> = flow {
         emit(

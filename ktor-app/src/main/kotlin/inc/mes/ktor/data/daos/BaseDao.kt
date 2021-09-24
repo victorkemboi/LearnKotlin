@@ -15,17 +15,48 @@
  */
 package inc.mes.ktor.data.daos
 
+/***
+ * Provides the generic data access functions for DAOS
+ */
 interface BaseDao<T> {
-
+    /***
+     * Add an instance of model [T] to the Database.
+     * @param item[T]
+     * @return [Int]
+     */
     suspend fun insert(item: T): Int
 
+    /***
+     * Add argument instances of model [T] to the Database.
+     * @param items[T]
+     * @return [List] of [T]
+     */
     suspend fun insert(vararg items: T): List<Int>
 
+    /***
+     * Add argument instances of model [T] to the Database.
+     * @param items [List] of [T]
+     * @return [List] of [T]
+     */
     suspend fun insert(items: List<T>): List<Int>
 
+    /***
+     * Mutate instances of model [T] in the Database.
+     * @param item[T]
+     * @return [Boolean]
+     */
     suspend fun update(item: T): Boolean
 
+    /***
+     * Mutate instance of model [T] in the Database.
+     * @param items [List] of [T]
+     * @return [List] of [Boolean]
+     */
     suspend fun update(items: List<T>): List<Boolean>
 
+    /***
+     * Remove instance of model [T] from the Database.
+     * @param item[T]
+     */
     suspend fun delete(item: T)
 }

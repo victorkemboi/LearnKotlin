@@ -22,7 +22,7 @@ import inc.mes.ktor.data.models.Token
 import inc.mes.ktor.data.userTokenStorage
 import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.AuthSerializer
-import inc.mes.ktor.utils.JwtVars
+import inc.mes.ktor.utils.models.JwtVars
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isBefore
 import inc.mes.ktor.utils.toJavaDate
