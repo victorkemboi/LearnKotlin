@@ -19,13 +19,12 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import inc.mes.ktor.data.daos.UserDao
 import inc.mes.ktor.data.models.Token
-import inc.mes.ktor.data.models.User
-import inc.mes.ktor.data.userStorage
 import inc.mes.ktor.data.userTokenStorage
 import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.AuthSerializer
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isAfter
+import inc.mes.ktor.utils.isBefore
 import inc.mes.ktor.utils.toJavaDate
 import io.ktor.application.*
 import io.ktor.http.*
@@ -33,12 +32,12 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.flow.first
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.slf4j.Logger
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 /***
  * A route to add a user to the database.
@@ -95,7 +94,7 @@ fun Route.loginRoute(
             }
             var existingToken = userTokenStorage[existingUser]
             if (existingToken == null ||
-                existingToken.expiry.isAfter(getLocalDateTimeNow())
+                existingToken.expiry.isBefore(getLocalDateTimeNow())
             ) {
                 val tokenExpiry = (Clock.System.now() + Duration.days(1)).toLocalDateTime(
                     TimeZone.currentSystemDefault()
@@ -111,6 +110,7 @@ fun Route.loginRoute(
                     token = token,
                     expiry = tokenExpiry
                 )
+                userTokenStorage[existingUser] = existingToken
             }
             call.respond(existingToken)
         }
