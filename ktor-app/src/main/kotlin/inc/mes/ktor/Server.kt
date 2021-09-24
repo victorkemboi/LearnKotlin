@@ -20,7 +20,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import inc.mes.ktor.data.di.dbModules
 import inc.mes.ktor.routes.onBoardingRoutes
 import inc.mes.ktor.routes.registerCustomerRoutes
-import inc.mes.ktor.utils.JwtVars
+import inc.mes.ktor.utils.models.JwtVars
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*

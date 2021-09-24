@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.utils
+package inc.mes.ktor.utils.models
 
 data class JwtVars(
     val secret: String,
