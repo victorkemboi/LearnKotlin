@@ -17,10 +17,12 @@ package inc.mes.ktor.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import inc.mes.ktor.data.daos.UserDao
 import inc.mes.ktor.data.entities.Token
 import inc.mes.ktor.data.entities.User
 import inc.mes.ktor.data.userStorage
 import inc.mes.ktor.data.userTokenStorage
+import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.SignUpSerializer
 import inc.mes.ktor.utils.getLocalDateTimeNow
 import inc.mes.ktor.utils.isAfter
@@ -45,10 +47,16 @@ fun Route.signUpRoute(log: Logger) {
         post {
             log.info("Sign up request")
             call.application.environment.log.info("Hello from signup")
-            val user = call.receive<SignUpSerializer>()
+            val user = call.receiveOrNull<SignUpSerializer>()
+                ?: return@post call.respond(
+                    message = "Invalid request!",
+                    status = HttpStatusCode.BadRequest
+                )
             log.info("Sign up request: $user")
-            userStorage[user.username] = user
-            call.respond(status = HttpStatusCode.Created, message = user)
+            val savedUser = user.toUser().apply {
+                id = UserDao().insert(this)
+            }
+            call.respond(status = HttpStatusCode.Created, message = savedUser)
         }
     }
 }
