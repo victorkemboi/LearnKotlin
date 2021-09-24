@@ -17,10 +17,7 @@ package inc.mes.ktor.routes
 
 import inc.mes.ktor.data.*
 import inc.mes.ktor.data.daos.CustomerDao
-import inc.mes.ktor.data.daos.UserDao
-import inc.mes.ktor.data.models.Customer
 import inc.mes.ktor.routes.mappers.toCustomer
-import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.CustomerSerializer
 import io.ktor.application.*
 import io.ktor.http.*

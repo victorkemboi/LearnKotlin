@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.routes.mappers
+package inc.mes.ktor.routes.serializers
 
-import inc.mes.ktor.data.models.Customer
-import inc.mes.ktor.data.models.User
-import inc.mes.ktor.routes.serializers.AuthSerializer
-import inc.mes.ktor.routes.serializers.CustomerSerializer
+import kotlinx.serialization.Serializable
 
-fun AuthSerializer.toUser() = User(
-    id = 0,
-    username = this.username,
-    password = this.password
-)
-
-fun CustomerSerializer.toCustomer() = Customer(
-    id = 0,
-    firstName = this.firstName,
-    lastName = this.lastName,
-    email = this.email
+@Serializable
+data class CustomerSerializer(
+    var firstName: String,
+    var lastName: String,
+    var email: String,
 )

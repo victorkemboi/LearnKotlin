@@ -23,7 +23,6 @@ import inc.mes.ktor.data.userTokenStorage
 import inc.mes.ktor.routes.mappers.toUser
 import inc.mes.ktor.routes.serializers.AuthSerializer
 import inc.mes.ktor.utils.getLocalDateTimeNow
-import inc.mes.ktor.utils.isAfter
 import inc.mes.ktor.utils.isBefore
 import inc.mes.ktor.utils.toJavaDate
 import io.ktor.application.*
@@ -31,13 +30,13 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.slf4j.Logger
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 /***
  * A route to add a user to the database.
