@@ -31,14 +31,25 @@ import org.koin.ktor.ext.Koin
 import org.koin.logger.SLF4JLogger
 
 // https://ktor.io/docs/jwt.html#jwt-settings
+/***
+ * The entry point to the application. Set the main execution to Netty Engine.
+ */
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+/***
+ * Configure Ktor Application via the [module] extension function.
+ * Environment variables and other execution configs be set in the *Application.conf* file.
+ */
 fun Application.module(testing: Boolean = true) {
     val secret = environment.config.property("jwt.secret").getString()
     val issuer = environment.config.property("jwt.issuer").getString()
     val audience = environment.config.property("jwt.audience").getString()
     val myRealm = environment.config.property("jwt.realm").getString()
 
+    /***
+     * Set and configure serialization component here.
+     * Selected library for conversion is [gson]
+     */
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
@@ -46,6 +57,10 @@ fun Application.module(testing: Boolean = true) {
         }
     }
 
+    /***
+     * Setup Authentication for the server.
+     * Selected auth library is [jwt].
+     */
     install(Authentication) {
         jwt("auth-jwt") {
             realm = myRealm
@@ -65,30 +80,44 @@ fun Application.module(testing: Boolean = true) {
             }
         }
     }
-    // Build app provided dependencies.
-    val appModules: Module = org.koin.dsl.module {
-        single {
-            log
-        }
-        single {
-            JwtVars(
-                secret = secret,
-                issuer = issuer,
-                audience = audience,
-                myRealm = myRealm
-            )
-        }
-    }
 
-    // Declare Koin
+    /***
+     * Setup Koin and its dependency graph
+     */
     install(Koin) {
         SLF4JLogger()
         val koinModules = mutableListOf<Module>().apply {
-            add(appModules)
+            add(
+                getKoinAppModule(
+                    secret, issuer, audience, myRealm
+                )
+            )
             addAll(dbModules)
         }
         modules(koinModules)
     }
     onBoardingRoutes()
     registerCustomerRoutes()
+}
+
+/***
+ * Provide dependencies to koin from the [Application]
+ */
+fun Application.getKoinAppModule(
+    secret: String,
+    issuer: String,
+    audience: String,
+    myRealm: String,
+): Module = org.koin.dsl.module {
+    single {
+        log
+    }
+    single {
+        JwtVars(
+            secret = secret,
+            issuer = issuer,
+            audience = audience,
+            myRealm = myRealm
+        )
+    }
 }

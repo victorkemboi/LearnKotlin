@@ -16,7 +16,7 @@
 package inc.mes.ktor.utils.models
 
 /***
- * JWT environment variables encapsulated to be injevted via koin.
+ * JWT environment variables encapsulated to be injected via koin.
  */
 data class JwtVars(
     val secret: String,
