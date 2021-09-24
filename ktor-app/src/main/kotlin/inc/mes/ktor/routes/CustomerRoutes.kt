@@ -16,14 +16,17 @@
 package inc.mes.ktor.routes
 
 import inc.mes.ktor.data.*
-import inc.mes.ktor.data.entity.Customer
+import inc.mes.ktor.data.daos.CustomerDao
+import inc.mes.ktor.routes.mappers.toCustomer
+import inc.mes.ktor.routes.serializers.CustomerSerializer
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.flow.first
 
-fun Route.customerRouting(application: Application) {
+fun Route.customerRouting(application: Application, customerDao: CustomerDao = CustomerDao()) {
     route("/customer/") {
         get {
             if (customerStorage.isNotEmpty()) {
@@ -38,25 +41,35 @@ fun Route.customerRouting(application: Application) {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            val customer =
-                customerStorage.find { it.id == id } ?: return@get call.respondText(
-                    "No customer with id $id",
+            val customer = customerDao.get(id.toIntOrNull() ?: 0).first()
+                ?: return@get call.respondText(
+                    "No customer with id: $id",
                     status = HttpStatusCode.NotFound
                 )
             call.respond(customer)
         }
         post {
-            val customer = call.receive<Customer>()
-            customerStorage.add(customer)
-            call.respondText("Customer stored correctly", status = HttpStatusCode.Created)
+            val customer = call.receiveOrNull<CustomerSerializer>()
+                ?: return@post call.respond(
+                    message = "Invalid request!",
+                    status = HttpStatusCode.BadRequest
+                )
+            val savedCustomer = customer.toCustomer().apply {
+                id = customerDao.insert(this)
+            }
+            call.respond(message = savedCustomer, status = HttpStatusCode.Created)
         }
         delete("{id}/") {
             val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            if (customerStorage.removeIf { it.id == id }) {
-                call.respondText("Customer removed correctly", status = HttpStatusCode.Accepted)
-            } else {
-                call.respondText("Not Found", status = HttpStatusCode.NotFound)
-            }
+            val customer = customerDao.get(id.toIntOrNull() ?: 0).first()
+                ?: return@delete call.respondText(
+                    "No customer with id: $id",
+                    status = HttpStatusCode.NotFound
+                )
+            customerDao.delete(customer)
+            return@delete call.respondText(
+                "Customer deleted successfully."
+            )
         }
     }
 }

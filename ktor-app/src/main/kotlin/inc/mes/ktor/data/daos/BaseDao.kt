@@ -13,10 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data
+package inc.mes.ktor.data.daos
 
-import inc.mes.ktor.data.models.*
+interface BaseDao<T> {
 
-val customerStorage = hashMapOf<Int, Customer>()
-val userStorage = hashMapOf<Int, User>()
-val userTokenStorage = hashMapOf<User, Token>()
+    suspend fun insert(item: T): Int
+
+    suspend fun insert(vararg items: T): List<Int>
+
+    suspend fun insert(items: List<T>): List<Int>
+
+    suspend fun update(item: T): Boolean
+
+    suspend fun update(items: List<T>): List<Boolean>
+
+    suspend fun delete(item: T)
+}

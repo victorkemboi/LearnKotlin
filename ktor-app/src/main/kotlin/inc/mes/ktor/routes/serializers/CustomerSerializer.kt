@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data
+package inc.mes.ktor.routes.serializers
 
-import inc.mes.ktor.data.models.*
+import kotlinx.serialization.Serializable
 
-val customerStorage = hashMapOf<Int, Customer>()
-val userStorage = hashMapOf<Int, User>()
-val userTokenStorage = hashMapOf<User, Token>()
+@Serializable
+data class CustomerSerializer(
+    var firstName: String,
+    var lastName: String,
+    var email: String,
+)

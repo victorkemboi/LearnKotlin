@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inc.mes.ktor.data.entity
+package inc.mes.ktor.data.models
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.*
 
 @Serializable
-open class BaseEntity {
+open class BaseModel {
     val createdAt: LocalDateTime? = null
     val updatedAt: LocalDateTime? = null
 }
