@@ -17,6 +17,7 @@ package inc.mes.ktor.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import inc.mes.ktor.data.daos.CustomerDao
 import inc.mes.ktor.data.daos.UserDao
 import inc.mes.ktor.data.models.Token
 import inc.mes.ktor.data.userTokenStorage
@@ -36,12 +37,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.koin.ktor.ext.inject
 import org.slf4j.Logger
 
 /***
  * A route to add a user to the database.
  */
-fun Route.signUpRoute(log: Logger, userDao: UserDao = UserDao()) {
+fun Route.signUpRoute(log: Logger) {
+    val userDao: UserDao by inject()
     route("/auth/signup/") {
         post {
             log.info("Sign up request")
