@@ -17,8 +17,6 @@ package inc.mes.ktor
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import inc.mes.ktor.data.daos.CustomerDao
-import inc.mes.ktor.data.daos.UserDao
 import inc.mes.ktor.data.di.dbModules
 import inc.mes.ktor.routes.onBoardingRoutes
 import inc.mes.ktor.routes.registerCustomerRoutes
